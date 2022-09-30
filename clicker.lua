@@ -1,55 +1,24 @@
 getgenv().AutoTap = false;
 getgenv().AutoRe = false;
 getgenv().BuyPets = false;
-getgenv().Tp = false;
-
+local pass = false
+local min = true
+local max = false
 if game.PlaceId == 5490351219 then
-
-	--b:Label("Pretty Useless NGL",{
-	--   TextSize = 25; -- Self Explaining
-	--   TextColor = Color3.fromRGB(255,255,255); -- Self Explaining
-	--   BgColor = Color3.fromRGB(69,69,69); -- Self Explaining
-		
-	--}) 
-
-	--b:Slider("Slider",{
-		--min = 10; -- min value of the slider
-	--  max = 50; -- max value of the slider
-	--  precise = true; -- max 2 decimals
-	--},function(value)
-	--  print(value)
-	--end)
-
-	--b:Dropdown("Dropdown",{"A","B","C"},true,function(mob) --true/false, replaces the current title "Dropdown" with the option that t
-	--   print(mob)
-	--end)
-
-	--b:Bind("Bind",Enum.KeyCode.C,function() --Default bind
-	--   print("Yes")
-	--end)
-
-	--b:ColorPicker("ColorPicker",Color3.fromRGB(255,0,0),function(color) --Default color
-	--  print(color)
-	--end)
-
-	--b:Box("Box","number",function(value) -- "number" or "string"
-	-- print(value)
-	--end)
-
-
-
-
-
-
-
+	local clickMod = require(game:GetService("Players").LocalPlayer.PlayerScripts.Aero.Controllers.UI.Click)
+	print("hacks injected if it doesnt work please contact gHoSt FaCe#2856")
+	function unlockGamePasses()
+		if not pass then
+			local pass = true
+			local gamepassMod = require(game:GetService("ReplicatedStorage").Aero.Shared.Gamepasses)
+			gamepassMod.HasPassOtherwisePrompt = function() return true end
+			print("passes unlocked")
+		end
+	end
 	function DoTap()
 		spawn(function()
 			while getgenv().AutoTap do
-				local args = {
-					[1] = 1
-				}
-
-				game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.ClickService.Click:FireServer(unpack(args))
+				clickMod:Click()
 				wait()
 			end
 		end)
@@ -73,13 +42,6 @@ if game.PlaceId == 5490351219 then
 			end
 		end)
 	end
-	--function PlayerPOS()
-		--local Player = game.Players.LocalPlayer
-		--if Player.Character then
-		--	return Player.Character.HumanoidRootPart.Position;
-		--end
-	--	return false;
-	--end
 	function tpTo(PlaceCFrame)
 		local Player = game.Players.LocalPlayer
 		if Player.Character then
@@ -91,87 +53,54 @@ if game.PlaceId == 5490351219 then
 			tpTo(game:GetService("Workspace").Worlds[world].Teleport.CFrame)
 		end
 	end
-
 	local library = loadstring((game:HttpGet('https://raw.githubusercontent.com/508droid/AikaV3rm-UI-Lib/main/Lib.lua')))()
-	local w = library:CreateWindow("farming") -- Creates the window
+	local w = library:CreateWindow("Farming") -- Creates the window
 	local b = w:CreateFolder("Farming") 
 	local p = library:CreateWindow("Teleport")
 	local q = library:CreateWindow("Eggs")
+	local t = library:CreateWindow("Other")
 	local g = library:CreateWindow("About")
 	local a = g:CreateFolder("Destroy ui")
-	local r = g:CreateFolder("Made by ur_mum")
+	local r = g:CreateFolder("Made by me")
+	local cc = t:CreateFolder("Unlock Gamepasses")
 	local d = q:CreateFolder("Eggs")
-	local c = p:CreateFolder("Tp") 
-
+	local c = p:CreateFolder("Tp")  
 	b:Toggle("Auto Click",function(bool)
 		getgenv().AutoTap = bool 
-		print("Auto Tap is: ", bool)
 		if bool then
 			DoTap()
 		end
 	end)
-
-	d:Toggle("Auto Buy Pets (basic)",function(bool)
+	local selEggs;
+	d:Dropdown("selected eggs",{"lava","desert","ocean","winter","toxic","candy","forest","storm","blocky","space","dominus","infinity","future","city","moon","fire",},true,function(val) --true/false, replaces the current title "Dropdown" with the option that t
+	   selEggs = val;
+	end)
+	d:Toggle("Auto Buy Pets",function(bool)
 		getgenv().BuyPets = bool 
-		print("Auto buy pets is: ", bool)
 		if bool then
-			BuyPets('basic')
+			BuyPets(selEggs)
 		end
 	end)
-
-	c:Button("Teleport lava",function()
-	tpWorld("Lava")
+	cc:Button("sum passes will not work",function()
+		unlockGamePasses()	
 	end)
-	c:Button("Teleport desert",function()
-	tpWorld("Desert")
+	local selWorld;
+	c:Dropdown("selected Worlds",{"Lava","Desert","Ocean","Winter","Toxic","Candy","Forest","Storm","Blocks","Space","Dominus","Infinity","Future","City","Moon","Fire",},true,function(val) --true/false, replaces the current title "Dropdown" with the option that t
+	   selWorld = val;
 	end)
-	c:Button("Teleport ocean",function()
-	tpWorld("Ocean")
+	c:Button("Teleport Selected",function()
+		if selWorld then
+			tpWorld(selWorld)
+		end
 	end)
-	c:Button("Teleport winter",function()
-	tpWorld("Winter")
-	end)
-	c:Button("Teleport toxic",function()
-	tpWorld("Toxic")
-	end)
-	c:Button("Teleport candy",function()
-	tpWorld("Candy")
-	end)
-	c:Button("Teleport forest",function()
-	tpWorld("Forest")
-	end)
-	c:Button("Teleport storm",function()
-	tpWorld("Storm")
-	end)
-	c:Button("Teleport blocks",function()
-	tpWorld("Blocks")
-	end)
-	c:Button("Teleport space",function()
-	tpWorld("Space")
-	end)
-	c:Button("Teleport dominus",function()
-	tpWorld("Dominus")
-	end)
-	c:Button("Teleport infinity",function()
-	tpWorld("Infinity")
-	end)
-	c:Button("Teleport future",function()
-	tpWorld("Future")
-	end)
-	c:Button("Teleport city",function()
-	tpWorld("City")
-	end)
-	c:Button("Teleport moon",function()
-	tpWorld("Moon")
-	end)
-	c:Button("Teleport fire",function()
-	tpWorld("Fire")
-	end)
-	b:Toggle("Auto Rebirth",function(bool)
+	local selRe;
+	b:Dropdown("selected Rebirths",{"1","10","100","1000","10000","100000","1000000"},true,function(val) --true/false, replaces the current title "Dropdown" with the option that t
+	   selRe = val;
+	end)	
+	b:Toggle("Selected Rebirth",function(bool)
 		getgenv().AutoRe = bool 
-		print("Auto Rebirth is: ", bool)
-		if bool then
-			DoRe(10)
+		if bool and selRe then
+			DoRe(selRe)
 		end
 	end)
 a:DestroyGui()

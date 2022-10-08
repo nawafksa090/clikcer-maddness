@@ -1,10 +1,14 @@
 getgenv().AutoTap = false;
 getgenv().AutoRe = false;
 getgenv().BuyPets = false;
+getgenv().orbs = false;
+getgenv().AutoBuyShop = false;
 local pass = false
 local min = true
 local max = false
+local playerHead = game.Players.LocalPlayer.Character.Head 
 if game.PlaceId == 5490351219 then
+	local nukeMod = require(game:GetService("Players").tdmcdskmk.PlayerScripts.Aero.Controllers.BossController)
 	local clickMod = require(game:GetService("Players").LocalPlayer.PlayerScripts.Aero.Controllers.UI.Click)
 	print("hacks injected if it doesnt work please contact gHoSt FaCe#2856")
 	function unlockGamePasses()
@@ -15,6 +19,47 @@ if game.PlaceId == 5490351219 then
 			print("passes unlocked")
 		end
 	end
+	function colectOrbs()
+		spawn(function ()
+			while getgenv().orbs do
+					for i,v in pairs(game:GetService("Workspace").ScriptObjects:GetDescendants()) do
+						for i,v in pairs(game:GetService("Workspace").ScriptObjects.VIPPortal:GetDescendants()) do
+							if v.Name == "TouchInterest" then
+								v.Name = "hell"
+							end
+						end
+
+						if v.Name == "TouchInterest" and v.Parent then
+							firetouchinterest(playerHead, v.Parent, 0)
+							wait()
+							firetouchinterest(playerHead, v.Parent, 1)
+					end		
+			end			end		
+		end)
+	end
+	function notHello()
+		if not getgenv().orbs then
+			for i,v in pairs(game:GetService("Workspace").ScriptObjects.VIPPortal:GetDescendants()) do
+				if v.Name == "TouchInterest" then
+					v.Name = "hell"
+				end
+			end
+		end
+	end
+
+
+	function AutoBuy(buy)
+		while getgenv().AutoBuyShop do 
+			local args = {
+				[1] = buy
+			}
+			game:GetService("ReplicatedStorage").Aero.AeroRemoteServices.UpgradeService.BuyUpgrade:FireServer(unpack(args))
+			wait()
+		end
+	end
+
+
+
 	function DoTap()
 		spawn(function()
 			while getgenv().AutoTap do
@@ -42,12 +87,20 @@ if game.PlaceId == 5490351219 then
 			end
 		end)
 	end
+	function PlayerPOS()
+		local Player = game.Players.LocalPlayer
+		if Player.Character then
+			return Player.Character.HumanoidRootPart.Position;
+		end
+		return false;
+	end
 	function tpTo(PlaceCFrame)
 		local Player = game.Players.LocalPlayer
 		if Player.Character then
 			Player.Character.HumanoidRootPart.CFrame = PlaceCFrame
 		end
 	end
+	tpTo(game:GetService("Workspace").Chests.daily1.Root.CFrame)
 	function tpWorld(world)
 		if game:GetService("Workspace").Worlds:FindFirstChild(world) then
 			tpTo(game:GetService("Workspace").Worlds[world].Teleport.CFrame)
@@ -62,6 +115,7 @@ if game.PlaceId == 5490351219 then
 	local g = library:CreateWindow("About")
 	local a = g:CreateFolder("Destroy ui")
 	local r = g:CreateFolder("Made by me")
+	local cp = t:CreateFolder("Orbs")
 	local cc = t:CreateFolder("Unlock Gamepasses")
 	local d = q:CreateFolder("Eggs")
 	local c = p:CreateFolder("Tp")  
@@ -80,6 +134,23 @@ if game.PlaceId == 5490351219 then
 		if bool then
 			BuyPets(selEggs)
 		end
+	end)
+	local selUpgrades
+	b:Dropdown("selected Upgrades",{"ClickMultiply","CursorDamage","Health","JumpPower","PetStorage","WalkSpeed"},true,function(val) --true/false, replaces the current title "Dropdown" with the option that t
+	   selUpgrades = val;
+	end)
+	b:Toggle("Auto Buy Upgrades",function(bool)
+		getgenv().AutoBuyShop = bool 
+		if bool then
+			AutoBuy(selUpgrades)
+		end
+	end)
+	cp:Toggle("Auto collect orbs",function(bool)
+		getgenv().orbs = bool 
+		if bool then
+			colectOrbs()
+		end
+		notHello()
 	end)
 	cc:Button("sum passes will not work",function()
 		unlockGamePasses()	
